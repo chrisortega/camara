@@ -84,21 +84,12 @@ function reloader() {
 function loadpics(){
     $.ajaxSetup({ cache: false });
     $.ajax({
-      url: "http://api.net16.net/pages/camera/imgs.php?_="+ new Date().getTime()+"&format=json",
+      url: "http://api.net16.net/main/index.php/api/ip/sstream",
       type: "get",
       cache: false,
-      success: function (data) {
-        var d = data.responseText
-        d = d.replace(/(<\/?)html( .+?)?>/gi,'$1NOTHTML$2>',d)
-        d = d.replace(/(<\/?)body( .+?)?>/gi,'$1NOTBODY$2>',d)
-        // select the `notbody` tag and log for testing
-        var response = $(d).find('notbody').html()    
-        var obj = jQuery.parseJSON( response );
-          $("#pic").empty()
-        $.each( obj, function( index, value ){
-            $("#pic").append('<h3>' + value + '</h3>')
-            $("#pic").append('<img src="'+value+'">')
-        });
+      success: function (data) {            
+        $("#pic").html(data.responseText)
+        $('.myIframe').css('height', $(window).height() / 1.1 +'px');
 
       }
     });    
